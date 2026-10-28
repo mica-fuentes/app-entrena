@@ -259,7 +259,7 @@ button.daydot.on.lime { background: var(--rest-soft); color: var(--ink); }
 .compare .knob { position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%; background: #fff; color: #16171D; display: grid; place-items: center; box-shadow: 0 4px 14px rgba(0,0,0,.2); }
 .compare .lbl { position: absolute; bottom: 14px; background: #fff; color: #16171D; padding: 5px 10px; border-radius: 999px; font-size: 13px; font-weight: 600; }
 .ph-tile { border-radius: 20px; aspect-ratio: 0.82; position: relative; overflow: hidden; display: grid; place-items: center; border: 0; padding: 0; cursor: pointer; font: inherit; color: inherit; }
-.ph-tile .lbl { position: absolute; left: 12px; bottom: 10px; font-size: 13px; font-weight: 600; color: #16171D; }
+.ph-tile .lbl { position: absolute; left: 12px; bottom: 10px; font-size: 13px; font-weight: 600; color: var(--ink); }
 
 /* Gráfico */
 .chart { width: 100%; height: auto; display: block; overflow: visible; }
@@ -366,3 +366,9 @@ a.chip { text-decoration: none; }
 .divider { height: 1px; background: var(--line); }
 .grid2 > * { min-width: 0; }
 @container (max-width: 339px) { .grid2.fold { grid-template-columns: 1fr; } }
+
+/* Progreso */
+.measure-in { display: flex; align-items: center; gap: 6px; border: 1.5px solid var(--line); border-radius: 12px; padding: 0 12px; min-height: 44px; background: var(--surface); }
+.measure-in:focus-within { border-color: var(--ink); }
+.measure-in input { width: 52px; border: 0; outline: none; background: transparent; font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink); text-align: right; padding: 0; }
+.measure-in span { font-weight: 600; font-size: 15px; }
