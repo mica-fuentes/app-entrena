@@ -50,6 +50,17 @@ export function useBack(fallback = '/hoy') {
   return () => (window.history.state?.idx > 0 ? nav(-1) : nav(fallback, { replace: true }))
 }
 
+// Registro de pantallas visitadas (lo llena App) para volver varias pantallas de una
+export const visits = []
+export function useBackTo() {
+  const nav = useNavigate()
+  return (path) => {
+    const cur = window.history.state?.idx ?? 0
+    const hit = [...visits].reverse().find((v) => v.path === path && v.idx < cur)
+    return hit ? nav(hit.idx - cur) : nav(path, { replace: true })
+  }
+}
+
 export function Back({ label, to, light }) {
   const back = useBack(to)
   return (

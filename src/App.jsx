@@ -2,7 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { AnimatePresence, MotionConfig } from 'framer-motion'
 import { HashRouter, Navigate, Route, Routes, useLocation, useNavigationType } from 'react-router-dom'
 import { StoreProvider, useStore } from './store'
-import { OverlayCtx, PageCtx } from './components/ui'
+import { OverlayCtx, PageCtx, visits } from './components/ui'
 import { Nav, OfflineBanner, StatusBar, TABS, Toast } from './components/Shell'
 import { GlobalSheets } from './screens/hoy/Sheets'
 import Hoy from './screens/hoy/Hoy'
@@ -38,6 +38,11 @@ function Shell() {
   const page = useMemo(() => {
     const from = last.current
     last.current = path
+    const idx = window.history.state?.idx ?? 0
+    // guardamos qué pantalla hay en cada posición del historial
+    const i = visits.findIndex((v) => v.idx === idx)
+    if (i >= 0) visits.splice(i)
+    visits.push({ path, idx })
     let dir = type === 'POP' ? -1 : 1
     if (ROOTS.includes(from) && ROOTS.includes(path) && from !== path) dir = tabIdx(path) > tabIdx(from) ? 1 : -1
     return { dir, type }

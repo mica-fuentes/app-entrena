@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { DAY, EXERCISES, MEASURES, START_HISTORY, START_MEALS, START_ROUTINES, WEIGHTS } from './data'
-import { weekday } from './lib/format'
+import { toMeal, weekday } from './lib/format'
 
 const KEY = 'app-entrena-v2'
 const today = weekday()
@@ -107,8 +107,8 @@ export function StoreProvider({ children }) {
     const routine = state.routines.find((r) => r.id === state.activeRoutine) || state.routines[0]
     const w = state.weights
     const trend = w.slice(-7).reduce((a, b) => a + b, 0) / Math.min(7, w.length)
-    return { ...tot, sessions: state.weekDone.length, routine, trend: +trend.toFixed(1), allFoods: state.customFoods }
-  }, [state.meals, state.routines, state.activeRoutine, state.weekDone, state.weights, state.customFoods])
+    return { ...tot, sessions: state.weekDone.length, routine, trend: +trend.toFixed(1) }
+  }, [state.meals, state.routines, state.activeRoutine, state.weekDone, state.weights])
 
   const actions = useMemo(() => ({
     set,
@@ -128,7 +128,7 @@ export function StoreProvider({ children }) {
         const recentFoods = [food.id, ...s.recentFoods.filter((x) => x !== food.id)].slice(0, 8)
         return { meals, recentFoods, firstSteps: { ...s.firstSteps, food: true } }
       })
-      if (!quiet) notify(`${food.name} agregado a la ${meal.toLowerCase()}`, 'comida')
+      if (!quiet) notify(`${food.name}: sumado ${toMeal(meal)}`, 'comida')
     },
     addMeal: (meal, desc, items, extra = {}) => {
       set((s) => {

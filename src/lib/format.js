@@ -39,6 +39,9 @@ export const joinY = (arr) => {
   return `${arr.slice(0, -1).join(', ')} ${/^h?i[^aeou]/i.test(last) ? 'e' : 'y'} ${last}`
 }
 
+// "a la cena", "al almuerzo"
+export const toMeal = (meal) => (meal === 'Cena' || meal === 'Merienda' ? `a la ${meal.toLowerCase()}` : `al ${meal.toLowerCase()}`)
+
 // Días elegidos → "L, M, J y S"
 export const daysLabel = (idx) => {
   const s = [...idx].sort((a, b) => a - b)
