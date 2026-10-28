@@ -214,7 +214,7 @@ export function SectionHead({ title, children }) {
   )
 }
 
-export function Row({ to, onClick, title, desc, left, right, chevron = true }) {
+export function Row({ to, onClick, title, desc, left, right, chevron = true, state }) {
   const inner = (
     <>
       {left}
@@ -224,7 +224,7 @@ export function Row({ to, onClick, title, desc, left, right, chevron = true }) {
     </>
   )
   if (!to && !onClick) return <div className="list-item" style={{ cursor: 'default' }}>{inner}</div>
-  return <Tap to={to} onClick={onClick} className="list-item">{inner}</Tap>
+  return <Tap to={to} onClick={onClick} state={state} className="list-item">{inner}</Tap>
 }
 
 /* ---------- Hoja inferior: sube con resorte, se cierra arrastrando ---------- */

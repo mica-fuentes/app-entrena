@@ -32,8 +32,12 @@ export const longDate = (d = new Date()) => cap(`${DAY_NAMES[weekday(d)]} ${d.ge
 export const shortDate = (d) => `${cap(DAY_NAMES[weekday(d)])} ${d.getDate()} ${MONTHS[d.getMonth()].slice(0, 3)}`
 export const daysAgo = (n) => { const d = new Date(); d.setHours(12, 0, 0, 0); d.setDate(d.getDate() - n); return d }
 
-// Lista "a, b y c"
-export const joinY = (arr) => (arr.length < 2 ? arr.join('') : `${arr.slice(0, -1).join(', ')} y ${arr[arr.length - 1]}`)
+// Lista "a, b y c" (con "e" antes de "i": "espalda alta e isquiotibiales")
+export const joinY = (arr) => {
+  if (arr.length < 2) return arr.join('')
+  const last = arr[arr.length - 1]
+  return `${arr.slice(0, -1).join(', ')} ${/^h?i[^aeou]/i.test(last) ? 'e' : 'y'} ${last}`
+}
 
 // Días elegidos → "L, M, J y S"
 export const daysLabel = (idx) => {

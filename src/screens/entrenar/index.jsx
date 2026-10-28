@@ -1,13 +1,6 @@
-import { Screen, Title } from '../../components/ui'
-export function Inicio() { return <Screen><Title>Inicio</Title></Screen> }
-export function Cobertura() { return <Screen><Title>Cobertura</Title></Screen> }
-export function Dia() { return <Screen><Title>Dia</Title></Screen> }
-export function Entrenando() { return <Screen><Title>Entrenando</Title></Screen> }
-export function Terminado() { return <Screen><Title>Terminado</Title></Screen> }
-export function Historial() { return <Screen><Title>Historial</Title></Screen> }
-export function ProgresoEjercicio() { return <Screen><Title>ProgresoEjercicio</Title></Screen> }
-export function Biblioteca() { return <Screen><Title>Biblioteca</Title></Screen> }
-export function Detalle() { return <Screen><Title>Detalle</Title></Screen> }
-export function Agregar() { return <Screen><Title>Agregar</Title></Screen> }
-export function Armar() { return <Screen><Title>Armar</Title></Screen> }
-export function Listas() { return <Screen><Title>Listas</Title></Screen> }
+export { Inicio, Cobertura, Dia } from './Rutina'
+export { default as Entrenando } from './Entrenando'
+export { default as Terminado } from './Terminado'
+export { Historial, ProgresoEjercicio } from './Historial'
+export { Biblioteca, Detalle } from './Ejercicios'
+export { Agregar, Armar, Listas } from './Armar'
