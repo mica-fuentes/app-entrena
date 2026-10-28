@@ -29,6 +29,7 @@ export default function Onboarding() {
   const s = useStore()
   const navigate = useNavigate()
   const [step, setStep] = useState(0)
+  const [name, setName] = useState('')
   const dir = useRef(1)
   const [goal, setGoal] = useState(s.goal.type)
   const [training, setTraining] = useState(s.training)
@@ -46,10 +47,10 @@ export default function Onboarding() {
   const adjust = () => setTarget(Math.round((res.low ? res.minHealthy + 2 : w - res.max * weeks) * 2) / 2)
   const finish = (notifications) => {
     const injuries = zones.filter((z) => z !== 'Ninguna').map((z) => ({ id: z, zone: z === 'Rodilla' ? 'Rodilla derecha' : z, level: pain, since: 'Hace poco' }))
-    s.set({ onboarded: true, notifications, goal: { type: goal, target, weeks }, body: { ...body, weight: w }, training, sessionsGoal: training.days, injuries, kcalGoal: n.kcal, tdee: n.tdee, deficit: n.deficit, protGoal: n.prot })
+    s.createProfile({ name: name.trim(), notifications, weights: [w], goal: { type: goal, target, weeks }, body: { ...body, weight: w }, training, sessionsGoal: training.days, injuries, kcalGoal: n.kcal, tdee: n.tdee, deficit: n.deficit, protGoal: n.prot })
     navigate('/primer-dia', { replace: true })
   }
-  const skip = () => { s.set({ onboarded: true }); navigate('/hoy', { replace: true }) }
+  const skip = () => { s.set({ onboarded: true, demo: true }); navigate('/hoy', { replace: true }) }
   const knee = zones.includes('Rodilla')
 
   const toggleZone = (z) => setZones((x) => (z === 'Ninguna' ? ['Ninguna'] : x.includes(z) ? x.filter((y) => y !== z) : [...x.filter((y) => y !== 'Ninguna'), z]))
@@ -57,7 +58,7 @@ export default function Onboarding() {
   const steps = [
     { // 1 · Bienvenida
       hero: true,
-      action: <><Btn onClick={next}>Empezar</Btn><p className="small note" style={{ color: 'var(--ink)', opacity: 0.8 }}>Es gratis y no te pedimos tarjeta.</p></>,
+      action: <><Btn onClick={next}>Crear mi perfil</Btn><Btn kind="sec" onClick={skip}>Probar con una persona de ejemplo</Btn><p className="small note" style={{ color: 'var(--ink)', opacity: 0.8 }}>Es gratis y no te pedimos tarjeta.</p></>,
       body: <>
         <div className="row g8" aria-label={APP_NAME}>
           <span className="logo-slot" aria-hidden="true"><Character forma="agua" expr="contento" level={70} size={18} breathe={false} /></span>
@@ -73,7 +74,6 @@ export default function Onboarding() {
         </div>
         <h1 className="display welcome-title">Tu objetivo, sin poner en riesgo tu salud.</h1>
         <p className="t15">Respondé unas preguntas y armamos tu plan de entrenamiento y alimentación.</p>
-        <button type="button" className="link" style={{ alignSelf: 'flex-start', fontWeight: 500 }} onClick={skip}>Ver la app con datos de ejemplo</button>
       </>,
     },
     { // 2 · Objetivo
@@ -99,8 +99,12 @@ export default function Onboarding() {
       </>,
     },
     { // 4 · Tus datos
-      action: <Btn onClick={next} disabled={!(body.height >= 120 && w >= 30)}>Continuar</Btn>,
-      body: <><h1 className="display h1">Contanos de vos</h1><BodyForm v={body} onChange={setBody} /></>,
+      action: <Btn onClick={next} disabled={!(name.trim() && body.height >= 120 && w >= 30)}>Continuar</Btn>,
+      body: <>
+        <h1 className="display h1">Contanos de vos</h1>
+        <label className="field"><span className="lbl">¿Cómo te llamás?</span><input value={name} maxLength={20} autoComplete="given-name" placeholder="Tu nombre" onChange={(e) => setName(e.target.value)} aria-label="Tu nombre" /></label>
+        <BodyForm v={body} onChange={setBody} />
+      </>,
     },
     { // 5 · Molestias
       action: <Btn onClick={next}>Continuar</Btn>,

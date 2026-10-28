@@ -91,7 +91,9 @@ a { color: inherit; }
   .device {
     /* 390 × 844 por dentro: el borde de 10 px va por fuera */
     width: 410px;
-    height: min(864px, calc(100vh - 48px));
+    /* siempre 390 × 844 por dentro; si la ventana es baja, se escala entero (zoom) en vez de achicar el alto */
+    height: 864px;
+    zoom: var(--fit, 1);
     border-radius: 44px;
     border: 10px solid #16171D;
     box-shadow: 0 30px 80px rgba(22, 23, 29, 0.25);

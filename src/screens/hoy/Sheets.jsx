@@ -42,7 +42,7 @@ function QuickAdd({ open, close }) {
 
 /* Hoja de agua */
 function Agua({ open, close }) {
-  const { water, waterGoal, addWater } = useStore()
+  const { water, waterGoal, addWater, removeWater } = useStore()
   const [other, setOther] = useState(false)
   const [ml, setMl] = useState(350)
   const left = Math.max(0, waterGoal - water)
@@ -57,6 +57,9 @@ function Agua({ open, close }) {
         <Btn kind="tint-water" className="water-btn" onClick={() => addWater(250)}>+250 ml</Btn>
         <Btn kind="tint-water" className="water-btn" onClick={() => addWater(500)}>+500 ml</Btn>
         <Btn kind="sec" className="water-btn" onClick={() => setOther((o) => !o)} aria-expanded={other}>Otra</Btn>
+      </div>
+      <div className="center-stack">
+        <button type="button" className="link" disabled={water <= 0} onClick={() => removeWater(250)} style={{ minHeight: 44, opacity: water <= 0 ? 0.4 : 1 }}>Me equivoqué: restar 250 ml</button>
       </div>
       <AnimatePresence initial={false}>
         {other && (

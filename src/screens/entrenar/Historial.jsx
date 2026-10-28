@@ -12,7 +12,7 @@ export function Historial() {
   const [open, setOpen] = useState(null)
   const now = new Date()
   const thisMonth = s.history.filter((h) => new Date(h.date).getMonth() === now.getMonth())
-  const avg = Math.round(s.history.reduce((a, h) => a + h.minutes, 0) / s.history.length)
+  const avg = s.history.length ? Math.round(s.history.reduce((a, h) => a + h.minutes, 0) / s.history.length) : 0
   const groups = []
   s.history.forEach((h) => {
     const d = new Date(h.date); const k = `${d.getFullYear()}-${d.getMonth()}`

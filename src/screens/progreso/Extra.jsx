@@ -111,8 +111,8 @@ export function Mes() {
   const plan = s.routine.days
   const history = new Set(s.history.map((h) => { const d = new Date(h.date); return d.getMonth() === mo ? d.getDate() : -1 }))
   // días entrenados: los del historial y los días de la rutina (salteando alguno, porque pasa y está bien)
-  const trained = (d) => d <= today && (history.has(d) || (plan.includes(weekday(new Date(y, mo, d))) && d % 6 !== 1 && d !== today) || (d === today && s.weekDone.includes(weekday())))
-  const slept = (d) => d < today && (d % 7 === 0 || d === today - 1)
+  const trained = (d) => d <= today && (history.has(d) || (s.demo && plan.includes(weekday(new Date(y, mo, d))) && d % 6 !== 1 && d !== today) || (d === today && s.weekDone.includes(weekday())))
+  const slept = (d) => s.demo && d < today && (d % 7 === 0 || d === today - 1)
   const count = Array.from({ length: total }, (_, i) => i + 1).filter(trained).length
   const weeks = Math.max(1, today / 7)
   return (

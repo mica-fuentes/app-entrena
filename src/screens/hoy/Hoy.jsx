@@ -25,9 +25,9 @@ export default function Hoy() {
   const navigate = useNavigate()
   const today = weekday()
   const day = s.routine.plan[0]
-  const showAdvice = s.sleep < 6 && !s.adviceClosed && !s.paused
+  const showAdvice = s.sleepLogged && s.sleep < 6 && !s.adviceClosed && !s.paused
   const doneToday = s.weekDone.includes(today)
-  const adjusted = s.planAdjusted && s.sleep < 6
+  const adjusted = s.planAdjusted && s.sleepLogged && s.sleep < 6
   const keepPlan = () => {
     s.set({ adviceClosed: true, planAdjusted: false })
     s.notify('Listo: hoy seguís con tu plan de siempre.', 'descanso')
@@ -93,10 +93,10 @@ export default function Hoy() {
           action={<Btn kind="sm white" className="daycard-act" onClick={() => s.addWater(250)} aria-label="Sumar 250 mililitros de agua">+ 250 ml</Btn>}
         />
         <DayCard
-          tone="rest" forma="descanso" expr={s.sleep < 6 ? 'dormido' : s.sleep >= 7 ? 'satisfecho' : 'contento'} level={(s.sleep / s.sleepGoal) * 100}
-          to="/sueno" label={`Descanso: dormiste ${hours(s.sleep)}`}
-          value={<span className="num h2 daycard-num"><Num value={s.sleep} format={hours} /></span>}
-          desc={'dormiste · meta 7 a 9 h'} size={52}
+          tone="rest" forma="descanso" expr={!s.sleepLogged ? 'contento' : s.sleep < 6 ? 'dormido' : s.sleep >= 7 ? 'satisfecho' : 'contento'} level={s.sleepLogged ? (s.sleep / s.sleepGoal) * 100 : 0}
+          to="/sueno" label={s.sleepLogged ? `Descanso: dormiste ${hours(s.sleep)}` : 'Descanso: todavía no registraste cuánto dormiste'}
+          value={<span className="num h2 daycard-num">{s.sleepLogged ? <Num value={s.sleep} format={hours} /> : '—'}</span>}
+          desc={s.sleepLogged ? 'dormiste · meta 7 a 9 h' : 'contanos cuánto dormiste'} size={52}
           action={<Btn kind="sm white" className="daycard-act" to="/sueno">Registrar</Btn>}
         />
       </div>

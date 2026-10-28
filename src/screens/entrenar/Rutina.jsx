@@ -130,7 +130,7 @@ export function Dia() {
   const i = Math.min(+n || 0, r.plan.length - 1)
   const day = r.plan[i]
   const knee = s.injuries.some((x) => x.zone.toLowerCase().includes('rodilla'))
-  const adjusted = s.planAdjusted && s.sleep < 6
+  const adjusted = s.planAdjusted && s.sleepLogged && s.sleep < 6
   const start = () => { s.startWorkout(i); navigate('/entrenar/en-curso') }
   const isActive = r.id === s.activeRoutine
   return (

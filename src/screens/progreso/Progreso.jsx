@@ -17,8 +17,8 @@ function WeightChart({ data, hide }) {
   const W = 300, H = 120, P = 6
   const tr = trendOf(data)
   const all = [...data, ...tr]
-  const lo = Math.min(...all) - 0.2, hi = Math.max(...all) + 0.2
-  const x = (i) => P + (i / (data.length - 1)) * (W - P * 2)
+  const lo = Math.min(...all) - 0.2, hi = Math.max(...all) + 0.2 // (con un solo pesaje el punto queda a la derecha)
+  const x = (i) => P + (data.length > 1 ? i / (data.length - 1) : 1) * (W - P * 2)
   const y = (v) => P + (1 - (v - lo) / (hi - lo)) * (H - P * 2)
   const d = tr.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ')
   const r = data.length > 60 ? 1.6 : 2.6
@@ -36,7 +36,7 @@ function WeightChart({ data, hide }) {
 export function Inicio() {
   const s = useStore()
   const [period, setPeriod] = useState('3 meses')
-  const src = period === 'Año' ? [...WEIGHTS_YEAR.slice(0, -42), ...s.weights] : s.weights
+  const src = period === 'Año' && s.demo ? [...WEIGHTS_YEAR.slice(0, -42), ...s.weights] : s.weights
   const data = src.slice(-Math.min(PERIODS[period].n, src.length))
   const tr = trendOf(data)
   const delta = tr[tr.length - 1] - tr[0]
@@ -58,6 +58,7 @@ export function Inicio() {
         <AnimatePresence mode="wait">
           <motion.div key={period} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}><WeightChart data={data} hide={s.hideWeight} /></motion.div>
         </AnimatePresence>
+        {s.weights.length < 3 && <p className="small fw6">Con unos pesajes más vemos tu tendencia. Pesate a la misma hora y mirá la línea, no el número del día.</p>}
         <p className="small muted">Los puntos son tus pesajes; la línea es lo que importa. Las subidas de un día suelen ser agua (creatina, sal, ciclo), no grasa.</p>
       </section>
 

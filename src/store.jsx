@@ -4,9 +4,14 @@ import { toMeal, weekday } from './lib/format'
 
 const KEY = 'app-entrena-v2'
 const today = weekday()
+const dayStamp = () => new Date().toDateString()
+const WATER_MAX = 5000 // por seguridad: más de 5 L en un día no se recomienda
 
 const INITIAL = {
   onboarded: false,
+  demo: true, // true = persona de ejemplo (Sofi); false = perfil creado en el onboarding
+  day: dayStamp(),
+  sleepLogged: true,
   name: 'Sofi',
   theme: 'auto', // auto | light | dark
   hideWeight: false,
@@ -52,10 +57,28 @@ const INITIAL = {
   firstSteps: { food: false, water: false, workout: false },
 }
 
+// Perfil creado desde el onboarding: sin registros de ejemplo, con una rutina armada por la app
+const FRESH = {
+  demo: false, sleepLogged: false, sleep: 7, planAdjusted: false, adviceClosed: true,
+  water: 0, meals: [], weekDone: [], history: [], photos: [], recentFoods: [], customFoods: [], favMeals: [],
+  measures: MEASURES.map((m) => ({ ...m, start: m.now })),
+  routines: START_ROUTINES.filter((r) => r.id === 'r2'), activeRoutine: 'r2',
+  session: null, lastSession: null, draft: null, injuryAlert: false, weeklyApplied: false, paused: null,
+  firstSteps: { food: false, water: false, workout: false },
+}
+
 const Ctx = createContext(null)
 
+// Cada día arranca de cero: agua, comidas y sueño de hoy (la persona de ejemplo vuelve a sus datos de muestra)
+function newDay(s) {
+  if (s.day === dayStamp()) return s
+  return s.demo
+    ? { ...s, day: dayStamp(), water: INITIAL.water, meals: START_MEALS, sleep: INITIAL.sleep, sleepLogged: true }
+    : { ...s, day: dayStamp(), water: 0, meals: [], sleepLogged: false }
+}
+
 function load() {
-  try { const s = localStorage.getItem(KEY); return s ? { ...INITIAL, ...JSON.parse(s) } : INITIAL } catch { return INITIAL }
+  try { const s = localStorage.getItem(KEY); return s ? newDay({ ...INITIAL, ...JSON.parse(s) }) : INITIAL } catch { return INITIAL }
 }
 
 const sum = (items, k) => items.reduce((a, i) => a + (i[k] || 0), 0)
@@ -77,6 +100,8 @@ function buildSession(routine, dayIdx, adjusted) {
 
 export function StoreProvider({ children }) {
   const [state, setState] = useState(load)
+  const live = useRef(state)
+  live.current = state
   const [toast, setToast] = useState(null)
   const [sheet, setSheet] = useState(null) // 'add' | 'agua' | null
   const t = useRef()
@@ -113,8 +138,19 @@ export function StoreProvider({ children }) {
   const actions = useMemo(() => ({
     set,
     addWater: (ml) => {
-      set((s) => ({ water: Math.min(s.waterGoal + 1500, s.water + ml), firstSteps: { ...s.firstSteps, water: true } }))
-      notify(`+${ml} ml registrados. ¡Bien ahí!`, 'agua')
+      const { water, waterGoal } = live.current
+      if (water + ml > WATER_MAX) { notify('Con 5 L por día alcanza y sobra. Hoy no sumamos más.', 'agua'); return }
+      set((s) => ({ water: Math.min(WATER_MAX, s.water + ml), firstSteps: { ...s.firstSteps, water: true } }))
+      if (water < waterGoal && water + ml >= waterGoal) notify('¡Llegaste a tu meta de agua de hoy!', 'agua')
+      else if (water >= waterGoal) notify(`+${ml} ml. Ya cumpliste tu meta: tomá según tengas sed.`, 'agua')
+      else notify(`+${ml} ml registrados. ¡Bien ahí!`, 'agua')
+    },
+    removeWater: (ml) => {
+      set((s) => ({ water: Math.max(0, s.water - ml) }))
+      notify(`Restamos ${ml} ml.`, 'agua')
+    },
+    createProfile: (data) => {
+      set({ ...FRESH, ...data, onboarded: true, day: dayStamp() })
     },
     addFood: (food, qty, meal, quiet) => {
       const r = (k) => Math.round((food[k] || 0) * qty)
@@ -140,7 +176,7 @@ export function StoreProvider({ children }) {
       })
     },
     setSleep: (h, extra = {}) => {
-      set({ sleep: h, adviceClosed: false, planAdjusted: h < 6, ...extra })
+      set({ sleep: h, sleepLogged: true, adviceClosed: false, planAdjusted: h < 6, ...extra })
       notify(h >= 7 ? 'Descansaste bien. ¡A aprovecharlo!' : 'Anotado. Hoy vamos más tranqui.', 'descanso')
     },
     logWeight: (kg) => { set((s) => ({ weights: [...s.weights.slice(1), kg], body: { ...s.body, weight: kg } })); notify('Peso guardado. Mirá la tendencia, no el número del día.', 'comida') },
