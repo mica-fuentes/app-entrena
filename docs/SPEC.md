@@ -5,7 +5,7 @@ Prototipo navegable y animado de una app de **entrenamiento + alimentación** qu
 - **Diseño de referencia (Figma):** https://www.figma.com/design/aSU909Jx8DJOAwTcRWPYJx
   - Páginas: `Onboarding`, `App — pantallas núcleo`, `App — flujos completos`, `App — flujos (modo oscuro)`, `Componentes`, `Imágenes`, `Brief`, `Portada portfolio`.
   - Si Figma está conectado, leé cada pantalla de ahí antes de programarla. Si no, esta especificación alcanza.
-- **Nombre de la app:** todavía no está decidido. No inventes uno: usá textos neutros (el título de la pestaña ya es neutral).
+- **Nombre de la app:** provisorio, en `src/brand.js` (`APP_NAME`). Usalo siempre desde ahí; cuando se defina el nombre y el logo se cambia en un solo lugar. Dejá un lugar para el logo en la bienvenida y en el ícono de la app (por ahora, la gota).
 - **Idioma:** español rioplatense con voseo ("Tocá", "Registrá", "entrenás"). Sin lenguaje con género cuando se puede evitar ("¿Arrancamos?" en vez de "¿Lista?").
 
 ---
@@ -299,3 +299,52 @@ Usá **framer-motion** (ya instalado). Todo con propósito, rápido y con `prefe
   - foco visible y áreas táctiles de 44 px o más;
   - `alt` en las fotos.
 - Deploy: `.github/workflows/deploy.yml` publica en GitHub Pages en cada push a `main`.
+
+---
+
+## 8. Adaptación a pantallas y control de calidad (obligatorio)
+
+El Figma es la **referencia de diseño, no un plano para copiar al píxel**. Está dibujado a 390×844. La app tiene que verse bien en cualquier teléfono y, si una medida del Figma no funciona en pantalla real, se ajusta con criterio de diseño.
+
+### Adaptación
+- **Probar como mínimo en:** 360×740 (Android chico), 375×667 (iPhone SE), 390×844 (referencia), 430×932 (iPhone grande). En la compu, el marco de teléfono.
+- **Anchos fluidos:** nada de anchos fijos en px para contenedores. Márgenes laterales de 16 a 24 px con `clamp()`.
+- **Títulos grandes con `clamp()`**, para que en pantallas chicas no ocupen media pantalla. Ejemplo: `clamp(26px, 8vw, 32px)`.
+- **Alturas:** usá `100dvh`, no `100vh` (en el celular la barra del navegador corta la pantalla). Sin alturas fijas en tarjetas con texto: que crezcan con el contenido.
+- **Zonas seguras:** respetá `env(safe-area-inset-top/bottom)` en el encabezado, la barra de navegación y las hojas inferiores, así nada queda debajo del notch ni de la barra de inicio.
+- **Grillas:** la de 2×2 de Hoy y las de números pasan a una columna, o achican el contenido, si no entran. Nunca desbordan para el costado.
+- **Chips y filtros:** si no entran, scroll horizontal con la última pastilla cortada en el borde para que se entienda que hay más. Nunca cortados a mitad de pantalla.
+- **Imágenes** con `aspect-ratio` y `object-fit: cover`. **Personajes** escalados según el ancho disponible.
+
+### Scroll
+- **Un solo scroll vertical por pantalla**, nunca un scroll adentro de otro.
+- **La barra de navegación y los botones de acción principales quedan fijos.** El contenido tiene padding inferior suficiente para que el último elemento no quede tapado.
+- **Hojas inferiores:** altura máxima del 88 % y scroll propio si el contenido es largo. Mientras están abiertas, el fondo no scrollea.
+- **Sin rebotes raros** ni saltos de layout al cargar (reservá espacio para imágenes y números).
+- **Al cambiar de pantalla, el scroll vuelve arriba.** Al volver para atrás, se recupera donde estaba.
+- **Con el teclado abierto** (buscar, editar peso, crear alimento), el campo activo y el botón de guardar tienen que seguir visibles.
+
+### Proporciones y legibilidad (lo que suele salir mal al copiar del Figma)
+- **Si algo se ve sobredimensionado** en el teléfono real (títulos, personajes, tarjetas, botones), achicalo con criterio. La jerarquía es más importante que la medida exacta.
+- **Mínimos de lectura:**
+  - texto corrido de 14 a 16 px;
+  - textos secundarios desde 12 px;
+  - etiquetas muy chicas, nunca menos de 11 px.
+  - **Nunca se achica la letra para que algo "entre"**: se reorganiza el layout.
+- **Áreas táctiles de 44×44 px como mínimo**, aunque el ícono sea más chico.
+- **Contraste de 4,5:1 en texto**, también en modo oscuro y sobre los degradés.
+- **Espaciado consistente** en una escala de 4 (4, 8, 12, 16, 20, 24, 32).
+
+### Autocontrol: hacelo vos, sin esperar que Mica lo marque
+Antes de dar por terminada cada etapa:
+1. Sacá capturas de cada pantalla en los 4 tamaños, en claro y oscuro (Playwright o el navegador que tengas).
+2. Mirá las capturas como diseñador/a y buscá:
+   - textos cortados o en una sola palabra por renglón;
+   - desbordes horizontales y elementos superpuestos;
+   - cosas tapadas por la barra de navegación;
+   - tamaños desproporcionados;
+   - contrastes flojos;
+   - viudas en títulos;
+   - scroll doble.
+3. Si tenés skills de diseño o de UI instaladas, usalas para revisar.
+4. Corregí todo lo que encuentres y volvé a capturar. Anotá en `docs/DECISIONES.md` qué ajustaste respecto del Figma y por qué.

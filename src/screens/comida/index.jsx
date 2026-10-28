@@ -1,0 +1,9 @@
+import { Screen, Title } from '../../components/ui'
+export function Inicio() { return <Screen><Title>Inicio</Title></Screen> }
+export function Buscar() { return <Screen><Title>Buscar</Title></Screen> }
+export function Porcion() { return <Screen><Title>Porcion</Title></Screen> }
+export function Escanear() { return <Screen><Title>Escanear</Title></Screen> }
+export function FotoPlato() { return <Screen><Title>FotoPlato</Title></Screen> }
+export function Detalle() { return <Screen><Title>Detalle</Title></Screen> }
+export function Crear() { return <Screen><Title>Crear</Title></Screen> }
+export function Numeros() { return <Screen><Title>Numeros</Title></Screen> }

@@ -90,7 +90,8 @@ export default function Character({ forma = 'agua', expr = 'contento', level = 6
   return (
     <motion.svg
       animate={controls}
-      style={{ transformOrigin: '50% 100%', display: 'block', overflow: 'visible' }}
+      className="char"
+      style={{ transformOrigin: '50% 100%', display: 'block', overflow: 'visible', flex: 'none' }}
       width={size} height={height} viewBox={`${vx} ${vy} ${vw} ${vh}`}
       role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : true}
     >
