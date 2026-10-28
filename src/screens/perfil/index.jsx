@@ -1,10 +1,3 @@
-import { Screen, Title } from '../../components/ui'
-export function Inicio() { return <Screen><Title>Inicio</Title></Screen> }
-export function Objetivo() { return <Screen><Title>Objetivo</Title></Screen> }
-export function Cuerpo() { return <Screen><Title>Cuerpo</Title></Screen> }
-export function Lesiones() { return <Screen><Title>Lesiones</Title></Screen> }
-export function Dias() { return <Screen><Title>Dias</Title></Screen> }
-export function Recordatorios() { return <Screen><Title>Recordatorios</Title></Screen> }
-export function Pro() { return <Screen><Title>Pro</Title></Screen> }
-export function Privacidad() { return <Screen><Title>Privacidad</Title></Screen> }
-export function Pausa() { return <Screen><Title>Pausa</Title></Screen> }
+export { Inicio, Objetivo, Cuerpo, Dias, Lesiones } from './Perfil'
+export { Recordatorios } from './Recordatorios'
+export { Pro, Privacidad, Pausa } from './Cuenta'

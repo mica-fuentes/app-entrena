@@ -67,7 +67,7 @@
 .scroll-x::-webkit-scrollbar { display: none; }
 .scroll-x > * { flex: none; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { min-height: 44px; display: inline-flex; align-items: center; gap: 6px; color: var(--ink); font-size: 14px; }
+.chip { min-height: 44px; min-width: 44px; justify-content: center; display: inline-flex; align-items: center; gap: 6px; color: var(--ink); font-size: 14px; }
 .chip.static { cursor: default; min-height: 36px; }
 .chip.on.ink { background: var(--primary-soft); box-shadow: inset 0 0 0 1.5px var(--ink); }
 .chip.on.training, .chip.on.food, .chip.on.water, .chip.on.rest, .chip.on.warn { color: var(--ink); }
@@ -372,3 +372,20 @@ a.chip { text-decoration: none; }
 .measure-in:focus-within { border-color: var(--ink); }
 .measure-in input { width: 52px; border: 0; outline: none; background: transparent; font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink); text-align: right; padding: 0; }
 .measure-in span { font-weight: 600; font-size: 15px; }
+
+/* Perfil y formularios */
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.goal-field { gap: 6px; padding: 12px; }
+.goal-field .mini-step { justify-content: space-between; }
+.goal-field .mini-step .num { min-width: 0 !important; flex: 1; font-size: 19px !important; }
+.group-label { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); margin: 6px 0 -6px; }
+.time-in { width: 100%; border: 0; background: transparent; font-family: var(--font-display); font-weight: 700; font-size: clamp(40px, 13cqi, 52px); text-align: center; color: var(--ink); outline: none; padding: 0; letter-spacing: -0.02em; }
+.time-in::-webkit-calendar-picker-indicator { display: none; }
+.time-sm { font-size: 26px; text-align: left; }
+.pro-table { display: grid; grid-template-columns: 1fr 52px 44px; align-items: center; }
+.pro-table > * { padding: 12px 0; border-bottom: 1px solid var(--line); }
+.pro-table > :nth-last-child(-n+3) { border-bottom: 0; }
+.pro-table .c { text-align: center; display: grid; place-items: center; }
+textarea.note-in { width: 100%; min-height: 120px; border: 1.5px solid var(--line); border-radius: 16px; padding: 12px 14px; font: inherit; font-size: 16px; color: var(--ink); background: var(--surface); resize: vertical; outline: none; }
+textarea.note-in:focus { border-color: var(--ink); }
+.goal-row .mini-step .num { white-space: nowrap; min-width: 76px !important; }
