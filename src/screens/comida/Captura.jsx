@@ -5,8 +5,8 @@ import { useStore } from '../../store'
 import { IMG, PLATE_GUESS } from '../../data'
 import Character from '../../components/Character'
 import { StatusBar } from '../../components/Shell'
-import { Btn, MiniStep, Num, Screen, Thumb, Title, TopBar, useBackTo } from '../../components/ui'
-import { fmt, toMeal } from '../../lib/format'
+import { Btn, MiniStep, Num, Screen, Title, TopBar, useBackTo } from '../../components/ui'
+import { toMeal } from '../../lib/format'
 import { pickMeal } from './util'
 
 const BARS = [3, 1, 2, 1, 3, 2, 1, 1, 3, 1, 2, 3, 1, 2, 1, 3, 1, 1, 2, 3, 1, 2]

@@ -26,7 +26,6 @@ function FoodRow({ f, onAdd, to }) {
 /* Buscar alimento: filtro en vivo */
 export function Buscar() {
   const s = useStore()
-  const navigate = useNavigate()
   const [q] = useSearchParams()
   const meal = pickMeal(q, s.meals)
   const [text, setText] = useState(q.get('q') || '')

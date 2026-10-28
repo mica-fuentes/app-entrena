@@ -148,7 +148,8 @@ export function Armar() {
       return { routines: exists ? st.routines.map((x) => (x.id === r.id ? r : x)) : [...st.routines, r], activeRoutine: exists ? st.activeRoutine : r.id, draft: null }
     })
     s.notify(editing ? 'Rutina guardada' : `"${d.name}" es tu nueva rutina activa`, 'entreno')
-    editing ? back() : navigate('/entrenar', { replace: true })
+    if (editing) back()
+    else navigate('/entrenar', { replace: true })
   }
   const items = d.plan[tab] || []
   return (

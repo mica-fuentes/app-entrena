@@ -8,7 +8,7 @@ import { DAYS, MONTHS, addMinutes, cap, hours, signed, weekday } from '../../lib
 import { direction } from './Progreso'
 
 /* Silueta ilustrada (nunca cuerpos reales). `waist` va de 0 (más ancha) a 1 (más angosta). */
-function Silhouette({ waist = 0, tone = 'training' }) {
+function Silhouette({ waist = 0 }) {
   const w = 30 - waist * 5
   return (
     <svg viewBox="0 0 120 220" width="56%" style={{ maxHeight: '82%' }} aria-hidden="true">

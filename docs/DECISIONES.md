@@ -63,3 +63,43 @@ Claude Code anota acá lo que decidió por su cuenta (porque no estaba en la spe
 | Pro | Encabezado cobalto plano (no degradé), tabla Gratis/Pro y precio placeholder. "Probar 7 días gratis" activa Pro en el prototipo y se puede volver a Gratis sin perder nada. | Lo pide la spec. |
 | Privacidad | "Descargar mis datos" descarga de verdad un JSON con lo guardado en el teléfono. "Borrar mi cuenta" pide confirmación, explica los 30 días y vuelve al onboarding. | Que se pueda probar. |
 | Pausa | Al pausar, Hoy muestra una tarjeta "Estás en pausa hasta…" con "Volver ahora", y se oculta el aviso de sueño. Si el motivo es una lesión, sugiere consultar antes de volver. | "Pausa metas y avisos sin perder nada". |
+| Onboarding | Los 9 pasos de la spec en una sola pantalla con transición deslizando (y al revés al volver con la flecha). La barra de 7 segmentos se llena con el color de cada paso; Guardá tu plan y ¿Te avisamos? no la muestran, como en el Figma. | La spec pide barra de 7 segmentos y transición deslizando. |
+| Onboarding · bienvenida | Arriba hay un lugar para el logo (por ahora, la gota) con el nombre de `brand.js`. Sumé el link "Ver la app con datos de ejemplo" para quien mire el portfolio y quiera saltear el onboarding. | La spec pide reservar el lugar del logo; el link facilita la demo. |
+| Onboarding · tu meta | Arranca con el ejemplo del Figma (bajar unos 15 kg en 8 semanas) para que se vea el chequeo de cuidado; "Usar el plazo recomendado" pasa al plazo seguro y "Ajustar mi meta" propone una meta alcanzable. "Continuar" solo aparece con una meta segura. | Mostrar el principio 1 en la primera experiencia, sin dejar avanzar con una meta insegura. |
+| Onboarding · cuenta y avisos | Apple, Google y mail son solo visuales (toast "en el prototipo es simulado"). "Activar avisos" no pide permiso real al navegador. | La spec dice que la cuenta es solo visual. |
+| Después del onboarding | Va a "Primer día" (personajes al 25 % y checklist que se completa de verdad: tocar la gota suma agua). El resto de la app sigue con los datos de ejemplo de Sofi para que se pueda recorrer completa. | Mostrar el estado de primer día sin dejar la demo vacía. |
+| Sin conexión | Además de la pantalla, si el navegador se queda sin internet aparece un aviso amable abajo con la gota ("Podés seguir: guardamos todo y sincronizamos después"). | La spec pide el estado; así también funciona en vivo. |
+| Avisos | Sumé la pantalla bloqueada con los avisos del Figma (página "Notificaciones"). Cada aviso abre la pantalla que corresponde. | Estaba en el Figma y muestra el tono sin culpa. |
+| Título de la pestaña | Se arma desde `APP_NAME` en `src/main.jsx`. | Que el nombre provisorio viva en un solo lugar. |
+
+## Resumen final
+
+### Qué se hizo
+- **Base y navegación:** barra inferior con el + que gira a ×, puntito activo que se desliza, hojas inferiores que se cierran arrastrando, toasts con personaje, transiciones de 24 px + fundido (al revés al volver), memoria de scroll, marco de teléfono de 390 × 844 en la compu y pantalla completa en el celular con zonas seguras.
+- **Hoy:** aviso de cuidado colapsable, tarjetas del día con conteo animado y personajes que se llenan, agua al instante, sueño, "Por qué ajustamos" con "Mantener mi plan".
+- **Entrenar:** rutina con cobertura por músculo en vivo, día de rutina, entrenamiento en curso con cronómetro y descanso reales (+15 s, saltar, vibración), molestia con alternativas reales, ¡Listo por hoy! con festejo de formas de la marca, historial, progreso de un ejercicio, biblioteca con filtro en vivo, detalle con video simulado, agregar ejercicios, armar rutina arrastrando y rutinas listas.
+- **Comida:** resumen con macros, buscar con filtro en vivo y estado sin resultados, porción con macros en vivo, escanear y foto del plato simulados, detalle editable, crear alimento y "Tus números, explicados".
+- **Progreso:** gráfico que se dibuja, ocultar número, medidas, fotos con siluetas, comparar con deslizador, tu mes sin rachas y revisión semanal.
+- **Perfil:** modo oscuro Auto/Claro/Oscuro, objetivo con chequeo de realismo, datos del cuerpo con recálculo, molestias, recordatorios editables, Pro, privacidad con descarga de datos, pausa.
+- **Onboarding y estados:** los 9 pasos, primer día, sin conexión y avisos.
+- **Control de calidad:** script de Playwright que saca capturas en 360 × 740, 375 × 667, 390 × 844 y 430 × 932, en claro y oscuro, y chequea desbordes, letra menor a 11 px, áreas táctiles menores a 44 px, contenido tapado por la barra y viudas en títulos. Última pasada: 336 capturas sin problemas (quedan como falsos positivos los campos de medidas, cuya área táctil es la fila entera).
+
+### Ajustes que hice al revisar las capturas
+- Título del aviso de Hoy que salía chico; "h" sola en "meta 7 a 9 h"; links del aviso que se separaban mucho en 360 px.
+- Botones de las tarjetas de Hoy que pisaban al personaje en 360 y 375 px (ahora bajan al pie).
+- "Piernas y glúteos" con "glúteos" solo en un renglón (títulos balanceados).
+- Explorar en Entrenar con el texto pegado al título; chips de alternativas subrayados.
+- Al terminar un entrenamiento, la pantalla saliente redirigía a Entrenar en vez de a ¡Listo por hoy! (bug corregido).
+- Molestia en la sentadilla búlgara decía "ya cuida esa zona" (no era cierto): ahora busca alternativas por músculos secundarios.
+- Doble × en los buscadores; selector de comida en Porción que ocupaba dos renglones.
+- Etiquetas de fotos ilegibles en modo oscuro; personajes cortados en la Revisión semanal.
+- Meta de peso que se partía en dos renglones en 360 px (ahora son filas a lo ancho).
+- Chips numéricos de 39 px de ancho (ahora 44 px mínimo).
+
+### Pendiente
+- **Nombre y logo definitivos:** cambiar `APP_NAME` en `src/brand.js` y el logo de la bienvenida (hoy, la gota).
+- **Imágenes faltantes:** fotos de 14 ejercicios nuevos y portadas propias de rutinas listas (hoy usan el placeholder con la pesa rusa o fotos existentes). Lista en la página Imágenes de Figma.
+- **Precio de Pro:** sigue el placeholder "$ X.XXX por mes".
+- **Funciones simuladas:** video de técnica, escáner, foto del plato, cuenta, avisos y "Sacar foto de hoy".
+- **Revisar con la diseñadora:** el uso de `--warn-soft` (crema) en avisos de seguridad y la decisión de usar la fecha real en vez del 20 de octubre.
+- **Peso del bundle:** 575 kB (175 kB comprimido). Para un prototipo está bien; si crece, conviene dividirlo por área.

@@ -389,3 +389,19 @@ a.chip { text-decoration: none; }
 textarea.note-in { width: 100%; min-height: 120px; border: 1.5px solid var(--line); border-radius: 16px; padding: 12px 14px; font: inherit; font-size: 16px; color: var(--ink); background: var(--surface); resize: vertical; outline: none; }
 textarea.note-in:focus { border-color: var(--ink); }
 .goal-row .mini-step .num { white-space: nowrap; min-width: 76px !important; }
+
+/* Onboarding */
+.screen.ob-hero { --bg: var(--hero); background: var(--hero); }
+.ob-top { display: flex; align-items: center; gap: 8px; min-height: 44px; margin-top: -8px; }
+.ob-bar { flex: 1; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+.ob-bar span { height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.ob-bar i { display: block; height: 100%; transform-origin: left; border-radius: 2px; }
+.ob-step { min-width: 0; }
+.welcome-art { position: relative; width: 100%; max-width: 360px; align-self: center; aspect-ratio: 1.12; }
+.pill { display: inline-block; background: var(--surface); color: var(--ink); font-weight: 600; font-size: 15px; padding: 11px 20px; border-radius: 999px; box-shadow: var(--shadow); }
+.welcome-title { font-size: clamp(32px, 10cqi, 40px); text-wrap: balance; line-height: 1.05; }
+.logo-slot { width: 32px; height: 32px; border-radius: 10px; background: var(--surface); display: grid; place-items: center; }
+/* Avisos */
+.page:has(.lock-screen) { background: linear-gradient(170deg, #20223A, #121318 70%); }
+.screen.lock-screen { --bg: transparent; }
+.lock-screen .action-bar::before { display: none; }
